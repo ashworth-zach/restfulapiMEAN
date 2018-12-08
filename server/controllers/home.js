@@ -5,7 +5,7 @@ module.exports={
         res.render("index");
     },
     get:function (req, res) {
-        task.find({}, function (err, Users) {
+        task.find({}, function (err, tasks) {
             if (err) {
                 res.json({
                     message: "Error",
@@ -14,14 +14,15 @@ module.exports={
             } else {
                 res.json({
                     message: "success",
-                    data: Users
+                    data: tasks
                 })
     
             }
         })
     },
     getone:function(req,res){
-        task.find({name:req.params.id},function(err,tasks){
+        task.findOne({_id:req.params.id},function(err,task){
+            console.log(task);
             if (err){
                 console.log(err)
                 res.json({
@@ -32,7 +33,7 @@ module.exports={
             else{
                 res.json({
                     message: "Success",
-                    data:tasks
+                    data:task
                 });
             }
         })
@@ -73,7 +74,7 @@ module.exports={
         })
     },
     delete:function(req,res){
-        task.remove({_id:req.params.id},function(err){
+        task.deleteOne({_id:req.params.id},function(err){
             if (err){
                 console.log(err)
                 res.json({
@@ -82,7 +83,7 @@ module.exports={
                 })
             }
             else{
-                res.redirect('/');
+                res.json({message:"success"});
             }
         })
     }

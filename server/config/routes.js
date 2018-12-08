@@ -12,7 +12,7 @@ module.exports = function(app){
         home.create(req,res);
     });
     app.patch('/tasks/:id', function(req, res) {
-        home.patch(req,res);
+        home.update(req,res);
     });
     app.delete('/tasks/:id', function(req, res) {
         home.delete(req,res);
