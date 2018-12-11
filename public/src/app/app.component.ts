@@ -27,6 +27,14 @@ export class AppComponent implements OnInit {
       console.log("Got our tasks!", this.tasks)
     })
   }
+  showOne(id: String) {
+    // get one planet
+    this._httpService.getTask(id).subscribe(response =>{
+      console.log(response);
+      this.task = response;
+    })
+    // set the planet to the child component using Inputs
+  }
   taskOnClick(event: any){
     this.task = [];
     this.id = event.target.value;

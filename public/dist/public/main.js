@@ -41,7 +41,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n<fieldset>\n  <form (submit) = \"onSubmit()\" class=\"postForm\">\n    <p>{{newTask | json}}</p>\n    <label>Task name:\n      <input type=\"text\" name=\"name\" [(ngModel)]=\"newTask.name\"  />\n    </label>\n    <label>Task description:\n      <input type=\"text\" name=\"description\"[(ngModel)]=\"newTask.description\"  />\n    </label>\n    <label>Task title:\n      <input type=\"text\" name=\"title\"[(ngModel)]=\"newTask.title\" />\n    </label>\n    <input type=\"submit\" value=\"Create Task\" />\n  </form>\n</fieldset>\n<h1><button (click)=\"tasksOnClick()\">click me to get some tasks</button></h1>\n<h2>The Task: </h2>\n<p>{{tasks['data']}}</p>\n<input (keyup)=\"taskOnClick($event)\">\n\n<div *ngFor=\"let x of tasks['data']\">\n <p><a href=\"/tasks/{{x['_id']}}\">{{x['_id']}}:</a> {{x['name']}} - {{x['description']}}</p>\n <form (submit) = \"onDelete(x._id)\" class=\"postForm\">\n    <input type=\"submit\" value=\"DELETE\" />\n</form>\n<form (submit) = \"editOnClick(x)\" class=\"postForm\">\n    <input type=\"submit\" value=\"EDIT\" />\n</form>\n<div *ngIf=\"x.showEditForm\">\n  <form (submit) = \"onEdit(x)\" class=\"postForm\">\n    {{x.title}}\n    <label>Title:\n      <input type=\"text\" name=\"editTask.title\" [(ngModel)] = \"x.title\" />\n    </label>\n    <label>Description:\n      <input type=\"text\" name=\"editTask.description\" [(ngModel)] = \"x.description\" />\n    </label>\n    <input type=\"submit\" value=\"EDIT\" />\n  </form>\n</div>\n</div>"
+module.exports = "\n<fieldset>\n  <form (submit) = \"onSubmit()\" class=\"postForm\">\n    <p>{{newTask | json}}</p>\n    <label>Task name:\n      <input type=\"text\" name=\"name\" [(ngModel)]=\"newTask.name\"  />\n    </label>\n    <label>Task description:\n      <input type=\"text\" name=\"description\"[(ngModel)]=\"newTask.description\"  />\n    </label>\n    <label>Task title:\n      <input type=\"text\" name=\"title\"[(ngModel)]=\"newTask.title\" />\n    </label>\n    <input type=\"submit\" value=\"Create Task\" />\n  </form>\n</fieldset>\n<h1><button (click)=\"tasksOnClick()\">click me to get some tasks</button></h1>\n<h2>The Task: </h2>\n<p>{{tasks['data']}}</p>\n<input (keyup)=\"taskOnClick($event)\">\n\n<div *ngFor=\"let x of tasks['data']\">\n <p><a href=\"/tasks/{{x['_id']}}\">{{x['_id']}}:</a> {{x['name']}} - {{x['description']}}</p>\n <form (submit) = \"onDelete(x._id)\" class=\"postForm\">\n    <input type=\"submit\" value=\"DELETE\" />\n</form>\n<button (click)='showOne(x._id)'>show</button>\n<form (submit) = \"editOnClick(x)\" class=\"postForm\">\n    <input type=\"submit\" value=\"EDIT\" />\n</form>\n<div *ngIf=\"x.showEditForm\">\n  <form (submit) = \"onEdit(x)\" class=\"postForm\">\n    {{x.title}}\n    <label>Title:\n      <input type=\"text\" name=\"editTask.title\" [(ngModel)] = \"x.title\" />\n    </label>\n    <label>Description:\n      <input type=\"text\" name=\"editTask.description\" [(ngModel)] = \"x.description\" />\n    </label>\n    <input type=\"submit\" value=\"EDIT\" />\n  </form>\n</div>\n</div>\n<app-task [showOne]='task'></app-task>\n"
 
 /***/ }),
 
@@ -83,6 +83,15 @@ var AppComponent = /** @class */ (function () {
             _this.tasks = data;
             console.log("Got our tasks!", _this.tasks);
         });
+    };
+    AppComponent.prototype.showOne = function (id) {
+        var _this = this;
+        // get one planet
+        this._httpService.getTask(id).subscribe(function (response) {
+            console.log(response);
+            _this.task = response;
+        });
+        // set the planet to the child component using Inputs
     };
     AppComponent.prototype.taskOnClick = function (event) {
         var _this = this;
@@ -157,6 +166,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./http.service */ "./src/app/http.service.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _task_task_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./task/task.component */ "./src/app/task/task.component.ts");
+
 
 
 
@@ -170,7 +181,8 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
+                _task_task_component__WEBPACK_IMPORTED_MODULE_7__["TaskComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -238,6 +250,67 @@ var HttpService = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]])
     ], HttpService);
     return HttpService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/task/task.component.css":
+/*!*****************************************!*\
+  !*** ./src/app/task/task.component.css ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3Rhc2svdGFzay5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/task/task.component.html":
+/*!******************************************!*\
+  !*** ./src/app/task/task.component.html ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n  <p>\n    {{ showOne | json}}\n  </p>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/task/task.component.ts":
+/*!****************************************!*\
+  !*** ./src/app/task/task.component.ts ***!
+  \****************************************/
+/*! exports provided: TaskComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TaskComponent", function() { return TaskComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var TaskComponent = /** @class */ (function () {
+    function TaskComponent() {
+    }
+    TaskComponent.prototype.ngOnInit = function () {
+        console.log('in showone component', this.showOne);
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], TaskComponent.prototype, "showOne", void 0);
+    TaskComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-task',
+            template: __webpack_require__(/*! ./task.component.html */ "./src/app/task/task.component.html"),
+            styles: [__webpack_require__(/*! ./task.component.css */ "./src/app/task/task.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], TaskComponent);
+    return TaskComponent;
 }());
 
 

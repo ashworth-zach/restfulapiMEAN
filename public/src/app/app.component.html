@@ -24,6 +24,7 @@
  <form (submit) = "onDelete(x._id)" class="postForm">
     <input type="submit" value="DELETE" />
 </form>
+<button (click)='showOne(x._id)'>show</button>
 <form (submit) = "editOnClick(x)" class="postForm">
     <input type="submit" value="EDIT" />
 </form>
@@ -40,3 +41,4 @@
   </form>
 </div>
 </div>
+<app-task [showOne]='task'></app-task>
