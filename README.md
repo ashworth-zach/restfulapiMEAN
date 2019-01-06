@@ -1,2 +1,2 @@
 # restfulapimean
-api with frontend built using Full Mean
+api built using Full Mean
